@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="tool.bmiTracker" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>BMI Tracker</name>
+    <description>
+        Simple but effective BMI, BMR, BFP and WtHR Tracker for any fitness addict out there or just for those whom want to lose waigth and track their progress!
+    </description>
+    <author email="dev@defthemes.com" href="http://defthemes.com">
+        The DefThemes DEV Team
+    </author>
+    <content src="index.html" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <!--
+            ldpi    : 36x36 px
+            mdpi    : 48x48 px
+            hdpi    : 72x72 px
+            xhdpi   : 96x96 px
+            xxhdpi  : 144x144 px
+            xxxhdpi : 192x192 px
+        -->
+        <icon src="res/android/logo.png" density="ldpi" />
+        <icon src="res/android/logo.png" density="mdpi" />
+        <icon src="res/android/logo.png" density="hdpi" />
+        <icon src="res/android/logo.png" density="xhdpi" />
+        <icon src="res/android/logo.png" density="xxhdpi" />
+        <icon src="res/android/logo.png" density="xxxhdpi" />
+        <feature name="SocialSharing">
+            <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
+        </feature>
+    </platform>
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <preference name="orientation" value="portrait" />
+    <preference name="StatusBarBackgroundColor" value="#3BCAE8" />
+</widget>

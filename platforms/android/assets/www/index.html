@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"> -->
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="stylesheet" href="css/jquery.min.css" />
+        <link rel="stylesheet" href="css/bootstrap.min.css" />
+        <link href='css/lato.css' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/abc.css" />
+        <link rel="stylesheet" href="js/c3/c3.min.css" />
+        <link rel="stylesheet" href="js/swiper/swiper.min.css" />
+        <link rel="stylesheet" href="css/index.css" />
+        <link rel="stylesheet" href="css/icons.css" />
+        <title>FITness Calculator</title>
+    </head>
+    <body>
+
+        <div data-role="page" id="menu">
+
+            <div role="main" class="ui-content">
+                <div class="results">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <small>welcome</small>
+                            <h1 id="name"></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="metrics">
+                    <!-- Slider -->
+                    <div class="swiper-container">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <strong>current weight</strong>
+                                <span id="currentWeight"></span>
+                                <small><txt id="currentWeightDate"></txt> <i class="fa fa-calculator pull-right"></i></small>
+                            </div>
+
+                            <div class="swiper-slide">
+                                <strong>current bmi</strong>
+                                <span id="currentBMI"></span>
+                                <small><txt id="currentBMIDate"></txt> <i class="fa fa-calculator pull-right"></i></small>
+                            </div>
+
+                            <div class="swiper-slide">
+                                <strong>current bmr</strong>
+                                <span id="currentBMR"></span>
+                                <small><txt id="currentBMRDate"></txt> <i class="fa fa-calculator pull-right"></i></small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Menu -->
+                    <div id="action-menu">
+                        <div class="arrow"></div>
+                        <a href="#calculate" data-transition="slideup" class="menu">
+                            <i class="fa fa-calculator"></i>
+                            <!-- <span>Calculate</span> -->
+                        </a>
+                        <a href="#settings" data-transition="slideup" class="menu">
+                            <i class="fa fa-sliders"></i> 
+                            <!-- <span>Settings</span> -->
+                        </a>
+                        <a href="#reset" data-transition="pop" data-rel="dialog" class="menu">
+                            <i class="fa fa-trash"></i> 
+                            <!-- <span>Reset</span> -->
+                        </a>
+                        <a href="#about" data-transition="slideup" class="menu">
+                            <i class="fa fa-info-circle"></i> 
+                            <!-- <span>About</span> -->
+                        </a>
+                        <a href="#help" data-transition="slideup" class="menu">
+                            <i class="fa fa-question-circle"></i> 
+                            <!-- <span>Help &amp; Feedback</span> -->
+                        </a>
+                        
+                    </div>
+                    <!-- </div>
+                        </div>
+                    </div> -->
+                    <!-- <div class="row">
+                        <div class="col-xs-6 no-padding-right">
+                            <a href="#calculate" data-transition="slideup" class="menu">
+                                <i class="fa fa-calculator"></i>
+                                <span>Calculate</span>
+                                <p>Calculate your BMI!</p>
+                            </a>
+                        </div>
+                        <div class="col-xs-6 no-padding-left">
+                            <a href="#results" data-transition="slideup" class="menu">
+                                <i class="fa fa-area-chart"></i> 
+                                <span>Results</span>
+                                <p>View your results history!</p>
+                            </a>
+                        </div>
+                    </div> -->
+                    <!-- <div class="row">
+                        <div class="col-xs-6 separator no-padding-right">
+                            <a href="#about" data-transition="slideup" class="menu">
+                                <i class="fa fa-info-circle"></i> 
+                                <span>About</span>
+                            </a>
+                        </div>
+                        <div class="col-xs-6 separator no-padding-left">
+                            <a href="#help" data-transition="slideup" class="menu">
+                                <i class="fa fa-question-circle"></i> 
+                                <span>Help &amp; Feedback</span>
+                            </a>
+                        </div>
+                    </div> -->
+                    <!-- <div class="row">
+                        <div class="col-xs-6 separator">
+                            <a href="#settings" data-transition="slideup" class="menu">
+                                <i class="fa fa-sliders"></i> 
+                                <span>Settings</span>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 separator">
+                            <a href="#reset" data-transition="pop" data-rel="dialog" class="menu">
+                                <i class="fa fa-trash"></i> 
+                                <span>Reset Data</span>
+                            </a>
+                        </div>
+                    </div> -->
+
+                    <div id="chart-container" class="hidden">
+                        <h4>Weight Diary</h4>
+                        <p class="help-block">(this graph shows only the weight tracking)</p>
+                        <div id="dataViewChart"></div>
+                    </div>
+                    <div id="dataCount" class="hidden"><h3>Tracked results <span style="display: inline-block;"></span></h3></div>
+
+                    
+                    
+                    <ul id="result_rows" class="hidden">
+                        <li class="first">
+                            <div class="media">
+                                <div class="media-left">
+                                    Date
+                                </div>
+                                <div class="media-body">
+                                    Test
+                                </div>
+                                <div class="media-right">
+                                    Result
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div data-role="page" id="settings">
+            <div data-role="header">
+                <a data-rel="back" class="fa fa-back menu-back" data-transition="slideup"></a>
+                <h1>Settings</h1>
+            </div>
+
+            <div role="main" class="ui-content">
+                <!-- <div class="results">
+                    
+                </div> -->
+                <div class="metrics">
+                    <label class="title">General</label>
+                    <ul>
+                        <li>
+                            <div class="checkbox checkbox-info">
+                                <input type="checkbox" name="saveData" id="saveData" checked="checked">
+                                <label for="saveData">Save input</label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="checkbox checkbox-info">
+                                <input type="checkbox" name="enableNotifications" id="enableNotifications" checked="checked">
+                                <label for="enableNotifications">Notifications</label>
+                            </div>
+                        </li>
+                    </ul>
+                    <label class="title">More</label>
+                    <ul class="settings">
+                        <li><a id="shareBtn"><i class="fa fa-share icon"></i> Share this app</a></li>
+                        <li><a><i class="fa fa-facebook icon"></i> Follow us on Facebook</a></li>
+                        <li><a><i class="fa fa-google icon"></i> Follow us on Google+</a></li>
+                        <li><a><i class="fa fa-twitter icon"></i> Follow us on Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="page" id="reset">
+
+            <div data-role="header" data-theme="b">
+                <h1>Reset Data</h1>
+            </div><!-- /header -->
+
+            <div role="main" class="ui-content metrics">
+                <p>Click on the button below to reset all your data!</p>
+                <div class="alert alert-warning">
+                    <strong>WARNING:</strong> This will erase all data from the app including your default data (name, gender, ..., weight).
+                </div>
+
+                <button id="resetData">RESET</button>
+            </div>
+        </div><!-- /page popup -->
+
+        <!-- <div data-role="page" id="results">
+            <div data-role="header">
+                <a href="#menu" class="fa fa-back menu-back" data-transition="slideup"></a>
+                <h1>Results</h1>
+            </div>
+
+            <div role="main" class="ui-content" ui-panel>
+                <div class="metrics">
+                    <div id="chart-container">
+                        <h4>Weight Diary</h4>
+                        <p class="help-block">(this graph shows only the weight tracking)</p>
+                        <div id="dataViewChart"></div>
+                    </div>
+                    <div id="dataCount"><h3>Tracked results <span style="display: inline-block;"></span></h3></div>
+
+                    
+                    
+                    <ul id="result_rows">
+                        <li class="first">
+                            <div class="media">
+                                <div class="media-left">
+                                    Date
+                                </div>
+                                <div class="media-body">
+                                    Test
+                                </div>
+                                <div class="media-right">
+                                    Result
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div> -->
+
+        <div data-role="page" id="about">
+            <div data-role="header">
+                <a data-rel="back" class="fa fa-back menu-back" data-transition="slideup"></a>
+                <h1>About</h1>
+            </div>
+
+            <div role="main" class="ui-content">
+                <div class="results">
+                </div>
+                <div class="metrics"></div>
+            </div>
+        </div>
+
+        <div data-role="page" id="help">
+            <div data-role="header">
+                <a data-rel="back" class="fa fa-back menu-back" data-transition="slideup"></a>
+                <h1>Help &amp; Feedback</h1>
+            </div>
+
+            <div>
+                <a href="#calculate" class="btn btn-action" id="newBMI"></a>
+            </div>
+
+            <div data-role="tabs">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#help_bmi" data-theme="a" data-ajax="false">BMI</a></li>
+                        <li><a href="#help_bmr" data-theme="a" data-ajax="false">BMR</a></li>
+                        <li><a href="#help_bfp" data-theme="a" data-ajax="false">BFP</a></li>
+                        <li><a href="#help_wthr" data-theme="a" data-ajax="false">WtHR</a></li>
+                    </ul>
+                </div>
+                <div id="help_bmi" class="ui-content" ui-panel>
+                    <div class="metrics">
+                        <h3>Body Mass Index</h3>
+                        <p>The body mass index (BMI) or Quetelet index is a value derived from the mass (weight) and height of an individual. The BMI is defined as the body mass divided by the square of the body height, and is universally expressed in units of kg/m2, resulting from mass in kilograms and height in metres.</p>
+
+                        <p>The BMI may also be determined using a table or chart which displays BMI as a function of mass and height using contour lines or colors for different BMI categories, and may use two different units of measurement.</p>
+
+                        <p>The BMI is an attempt to quantify the amount of tissue mass (muscle, fat, and bone) in an individual, and then categorize that person as underweight, normal weight, overweight, or obese based on that value. However, there is some debate about where on the BMI scale the dividing lines between categories should be placed. Commonly accepted BMI ranges are underweight: under 18.5, normal weight: 18.5 to 25, overweight: 25 to 30, obese: over 30.</p>
+
+                        <h3>Categories</h3>
+
+                        <p>A frequent use of the BMI is to assess how much an individual's body weight departs from what is normal or desirable for a person's height. The weight excess or deficiency may, in part, be accounted for by body fat (adipose tissue) although other factors such as muscularity also affect BMI significantly (see discussion below and overweight).</p>
+
+                        <p>The WHO regards a BMI of less than 18.5 as underweight and may indicate malnutrition, an eating disorder, or other health problems, while a BMI equal to or greater than 25 is considered overweight and above 30 is considered obese. These ranges of BMI values are valid only as statistical categories.</p>
+
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th colspan="2">BMI (kg/m<sup>2</sup>)</th>
+                                    <th colspan="2">BMI Prime</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>from</th>
+                                    <th>to</th>
+                                    <th>from</th>
+                                    <th>to</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Very severely underweight</td>
+                                    <td></td>
+                                    <td>15.0</td>
+                                    <td></td>
+                                    <td>0.60</td>
+                                </tr>
+                                <tr>
+                                    <td>Severely underweight</td>
+                                    <td>15</td>
+                                    <td>16</td>
+                                    <td>0.60</td>
+                                    <td>0.64</td>
+                                </tr>
+                                <tr>
+                                    <td>Underweight</td>
+                                    <td>16</td>
+                                    <td>18.5</td>
+                                    <td>0.64</td>
+                                    <td>0.74</td>
+                                </tr>
+                                <tr>
+                                    <td>Normal (healthy weight)</td>
+                                    <td>18.5</td>
+                                    <td>25</td>
+                                    <td>0.74</td>
+                                    <td>1.0</td>
+                                </tr>
+                                <tr>
+                                    <td>Overweight</td>
+                                    <td>25</td>
+                                    <td>30</td>
+                                    <td>1.0</td>
+                                    <td>1.2</td>
+                                </tr>
+                                <tr>
+                                    <td>Obese Class I (Moderately obese)</td>
+                                    <td>30</td>
+                                    <td>35</td>
+                                    <td>1.2</td>
+                                    <td>1.4</td>
+                                </tr>
+                                <tr>
+                                    <td>Obese Class II (Severely obese)</td>
+                                    <td>35</td>
+                                    <td>40</td>
+                                    <td>1.4</td>
+                                    <td>1.6</td>
+                                </tr>
+                                <tr>
+                                    <td>Obese Class III (Very severely obese)</td>
+                                    <td>40</td>
+                                    <td></td>
+                                    <td>1.6</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <a href="#" onclick="cordova.InAppBrowser.open('https://en.wikipedia.org/wiki/Body_mass_index', '_blank');">For even more information on Body Mass Index read this Wiki</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="help_bmr" class="ui-content" ui-panel>
+                    <div class="metrics">
+                        <h3>Basal Metabolic Rate</h3>
+
+                        <p><strong>Basal metabolic rate (BMR)</strong> is the minimal rate of energy expenditure per unit time by endothermic animals at rest. It is reported in energy units per unit time ranging from watt (Joule/second) to ml O2/min or Joule per hour per kg body mass J/(h.kg)). Proper measurement requires a strict set of criteria be met. These criteria include being in a physically and psychologically undisturbed state, in a thermally neutral environment, while in the post-absorptive state (i.e., not actively digesting food). In bradymetabolic animals, such as fish and reptiles, the equivalent term standard metabolic rate (SMR) is used. It follows the same criteria as BMR, but requires the documentation of the temperature at which the metabolic rate was measured. This makes BMR a variant of standard metabolic rate measurement that excludes the temperature data, a practice that has led to problems in defining "standard" rates of metabolism for many mammals.</p>
+
+                        <p>Metabolism refers to the processes that the body needs to function. Basal Metabolic Rate is the amount of energy expressed in calories that a person needs to keep the body functioning at rest. Some of those processes are breathing, blood circulation, controlling body temperature, cell growth, brain and nerve function, and contraction of muscles. Basal metabolic rate (BMR) affects the rate that a person burns calories and ultimately whether that individual maintains, gains, or loses weight. The basal metabolic rate accounts for about 60 to 75% of the daily calorie expenditure by individuals. It is influenced by several factors. BMR typically declines by 1-2% per decade after age 20, mostly due to loss of fat-free mass, although the variability between individuals is high.</p>
+
+                        <h3>Description</h3>
+
+                        <p>The body's generation of heat is known as thermogenesis and it can be measured to determine the amount of energy expended. BMR generally decreases with age and with the decrease in lean body mass (as may happen with aging). Increasing muscle mass has the effect of increasing BMR. Aerobic (resistance) fitness level, a product of cardiovascular exercise, while previously thought to have effect on BMR, has been shown in the 1990s not to correlate with BMR when adjusted for fat-free body mass.[citation needed] But anaerobic exercise does increase resting energy consumption (see "aerobic vs. anaerobic exercise"). Illness, previously consumed food and beverages, environmental temperature, and stress levels can affect one's overall energy expenditure as well as one's BMR.</p>
+
+                        <p>BMR is measured under very restrictive circumstances when a person is awake. An accurate BMR measurement requires that the person's sympathetic nervous system not be stimulated, a condition which requires complete rest. A more common measurement, which uses less strict criteria, is resting metabolic rate (RMR).</p>
+
+                        <p>BMR may be measured by gas analysis through either direct or Indirect Calorimetry, though a rough estimation can be acquired through an equation using age, sex, height, and weight. Studies of energy metabolism using both methods provide convincing evidence for the validity of the respiratory quotient (R.Q.), which measures the inherent composition and utilization of carbohydrates, fats and proteins as they are converted to energy substrate units that can be used by the body as energy.</p>
+
+                        <h3>Nutrition and dietary considerations</h3>
+
+                        <p>Basal metabolism is usually by far the largest component of total caloric expenditure. However, the Harris–Benedict equations are only approximate and variation in BMR (reflecting varying body composition), in physical activity levels, and in energy expended in thermogenesis make it difficult to estimate the dietary consumption any particular individual needs in order to maintain body weight.</p>
+
+                        <h3>Longevity</h3>
+
+                        <p>In 1926, Raymond Pearl proposed that longevity varies inversely with basal metabolic rate (the "rate of living hypothesis"). Support for this hypothesis comes from the fact that mammals with larger body size have longer maximum life spans (large animals do have higher total metabolic rates, but the metabolic rate at the cellular level is much lower, and the breathing rate and heartbeat are slower in larger animals) and the fact that the longevity of fruit flies varies inversely with ambient temperature. Additionally, the life span of houseflies can be extended by preventing physical activity. This theory has been bolstered by several new studies linking lower basal metabolic rate to increased life expectancy, across the animal kingdom—including humans. Calorie restriction and reduced thyroid hormone levels, both of which decrease the metabolic rate, have been associated with higher longevity in animals.</p>
+
+                        <p>However, the ratio of total daily energy expenditure to resting metabolic rate can vary between 1.6 and 8.0 between species of mammals. Animals also vary in the degree of coupling between oxidative phosphorylation and ATP production, the amount of saturated fat in mitochondrial membranes, the amount of DNA repair, and many other factors that affect maximum life span.</p>
+
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <a href="#" onclick="cordova.InAppBrowser.open('https://en.wikipedia.org/wiki/Basal_metabolic_rate', '_blank');">For even more information on Basal Metabolic Rate read this Wiki</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="help_wthr" class="ui-content" ui-panel>
+                    <div class="metrics">
+                        <h3>Waist-to-height ratio</h3>
+                        
+                        <p>A person's waist-to-height ratio (WHtR), also called waist-to-stature ratio (WSR), is defined as their waist circumference divided by their height, both measured in the same units. The WHtR is a measure of the distribution of body fat. Higher values of WHtR indicate higher risk of obesity-related cardiovascular diseases; it is correlated with abdominal obesity.</p>
+
+                        <p>A 2010 study that followed 11,000 subjects for up to eight years concluded that WHtR is a much better measure of the risk of heart attack, stroke or death than the more widely used body mass index. However, a 2011 study that followed 60,000 participants for up to 13 years found that waist-hip ratio (when adjusted for BMI) was a better predictor of ischaemic heart disease mortality than WHtR.</p>
+
+                        <p>Conversely, WHtR was not a predictor for new-onset diabetes melitus in at least one study.</p>
+
+                        <p>A WHtR of over 0.5 is critical and signifies an increased risk; a 2010 systematic review of published studies concluded that "WHtR may be advantageous because it avoids the need for age-, sex- and ethnic-specific boundary values". For people under 40 the critical value is 0.5, for people aged 40–50 the critical value is between 0.5 and 0.6, and for people over 50 the critical values start at 0.6.</p>
+
+                        <p>As a comparative, the following table categorises the boundaries of persons in terms of health:</p>
+
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Children (up to 15)</th>
+                                    <th>Men</th>
+                                    <th>Women</th>
+                                    <th>Categorisation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>&lt;0.34</td>
+                                    <td>&lt;0.34</td>
+                                    <td>&lt;0.34</td>
+                                    <td>Extremely Slim</td>
+                                </tr>
+                                <tr>
+                                    <td>0.35 to 0.45</td>
+                                    <td>0.35 to 0.42</td>
+                                    <td>0.35 to 0.41</td>
+                                    <td>Healthy Slim</td>
+                                </tr>
+                                <tr>
+                                    <td>0.46 to 0.51</td>
+                                    <td>0.43 to 0.52</td>
+                                    <td>0.42 to 0.48</td>
+                                    <td>Healthy</td>
+                                </tr>
+                                <tr>
+                                    <td>0.52 to -.63</td>
+                                    <td>0.53 to 0.57</td>
+                                    <td>0.49 to 0.53</td>
+                                    <td>Overweight</td>
+                                </tr>
+                                <tr>
+                                    <td>0.64 +</td>
+                                    <td>0.58 to 0.62</td>
+                                    <td>0.54 to 0.57</td>
+                                    <td>Very Overweight</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>0.63 +</td>
+                                    <td>0.58 +</td>
+                                    <td>Morbidly Obese</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <a href="#" onclick="cordova.InAppBrowser.open('https://en.wikipedia.org/wiki/Waist-to-height_ratio', '_blank');">For even more information on Body Mass Index read this Wiki</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="help_bfp" class="ui-content" ui-panel>
+                    <div class="metrics">
+                        <h3>Body Fat Percentage</h3>
+                        
+                        <p>The body fat percentage (BFP) of a human or other living being is the total mass of fat divided by total body mass; body fat includes essential body fat and storage body fat. Essential body fat is necessary to maintain life and reproductive functions. The percentage of essential body fat for women is greater than that for men, due to the demands of childbearing and other hormonal functions. The percentage of essential fat is 3–5% in men, and 8–12% in women (referenced through NASM). Storage body fat consists of fat accumulation in adipose tissue, part of which protects internal organs in the chest and abdomen. The minimum recommended total body fat percentage exceeds the essential fat percentage value reported above. A number of methods are available for determining body fat percentage, such as measurement with calipers or through the use of bioelectrical impedance analysis.</p>
+
+                        <p>The body fat percentage is a measure of fitness level, since it is the only body measurement which directly calculates a person's relative body composition without regard to height or weight. The widely used body mass index (BMI) provides a measure that allows the comparison of the adiposity of individuals of different heights and weights. While BMI largely increases as adiposity increases, due to differences in body composition, other indicators of body fat give more accurate results; for example, individuals with greater muscle mass or larger bones will have higher BMIs. As such, BMI is a useful indicator of overall fitness for a large group of people, but a poor tool for determining the health an individual.</p>
+
+                        <h3>Typical body fat amounts</h3>
+
+                        <p>Epidemiologically, the percentage of body fat in an individual varies according to sex and age.[2] Various theoretical approaches exist on the relationships between body fat percentage, health, athletic capacity, etc. Different authorities have consequently developed different recommendations for ideal body fat percentages.</p>
+
+                        <p>In males, mean percentage body fat ranged from 22.9% at age 16–19 years to 30.9% at age 60–79 years. In females, mean percentage body fat ranged from 32.0% at age 8–11 years to 42.4% at age 60–79 years.</p>
+
+                        <p>The table below from the American Council on Exercise shows how average percentages differ according to the specified groups and categories:</p>
+
+                        <table class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="110">Description</th>
+                                    <th scope="col" width="80">Women</th>
+                                    <th scope="col" width="80">Men</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Essential fat</td>
+                                    <td align="center">10–13%</td>
+                                    <td align="center">2–5%</td>
+                                </tr>
+                                <tr>
+                                    <td>Athletes</td>
+                                    <td align="center">14–20%</td>
+                                    <td align="center">6–13%</td>
+                                </tr>
+                                <tr>
+                                    <td>Fitness</td>
+                                    <td align="center">21–24%</td>
+                                    <td align="center">14–17%</td>
+                                </tr>
+                                <tr>
+                                    <td>Average</td>
+                                    <td align="center">25–31%</td>
+                                    <td align="center">18–24%</td>
+                                </tr>
+                                <tr>
+                                    <td>Obese</td>
+                                    <td align="center">32%+</td>
+                                    <td align="center">25%+</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <a href="#" onclick="cordova.InAppBrowser.open('https://en.wikipedia.org/wiki/Body_fat_percentage', '_blank');">For even more information on Body Fat Percentage read this Wiki</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="page" id="setup">
+
+            <div class="metrics" style="background-color: #3BCAE8 !important; color: #fff;">
+                <div class="text-center" id="intro">
+                    <h1>Hello</h1>
+                    <p>Please take 10 seconds to go trough this simple setup!</p>
+                    <button class="btn-bounce scrollDown"></button>
+                </div>
+                <form action="" id="setupForm">
+                    <div class="form-group">
+                        <label for="setupName">* My name is</label>
+                        <input type="text" name="setupName" id="setupName" required="">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label for="setupGender">I am a</label>
+                                <select name="setupGender" id="setupGender">
+                                    <option value="1">Female</option>
+                                    <option value="2" selected="selected">Male</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-6">
+                                <label for="setupMetrics">I use</label>
+                                <select name="setupMetrics" id="setupMetrics">
+                                    <option value="1">Imperial</option>
+                                    <option value="2" selected="selected">Metric</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label for="setupAge">My age</label>
+                                <input type="number" name="setupAge" id="setupAge">
+                            </div>
+                            <div class="col-xs-6">
+                                <label for="setupHeight">My height</label>
+                                <input type="number" name="setupHeight" id="setupHeight">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label for="setupWeight">My weight</label>
+                                <input type="number" name="setupWeight" id="setupWeight">
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <a class="btn btn-danger saveSetup">Finish Setup</a>
+                            </div>
+                        </div>
+                    </div>
+                    <p>( * means required field )</p>
+                </form>
+            </div>
+        </div>
+        
+        <div data-role="page" id="calculate">
+            <div data-role="header">
+                <a data-rel="back" class="fa fa-back menu-back" data-transition="slideup"></a>
+                <h1>Calculate</h1>
+            </div>
+            <div data-role="tabs">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#bmi" data-theme="a" data-ajax="false">BMI</a></li>
+                        <li><a href="#bmr" data-theme="a" data-ajax="false">BMR</a></li>
+                        <li><a href="#bfp" data-theme="a" data-ajax="false">BFP</a></li>
+                        <li><a href="#wthr" data-theme="a" data-ajax="false">WtHR</a></li>
+                    </ul>
+                </div>
+
+
+
+
+
+
+
+
+                <div id="bmi" class="ui-content">
+                    <div class="results">
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <small>your body mass index</small>
+                                <h1 id="bmi-result" class="odometer">0.0</h1>
+                            </div>
+                            <div class="col-xs-4 user-info">
+                                <!-- <img src="img/1.jpg" alt=""> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-info" id="calculateBMI"></button>
+                    </div>
+
+                    <div class="arrow">
+                        <div></div>
+                    </div>
+
+                    <div class="grid ui-responsive">
+                        <div class="col vsu">&nbsp;</div>
+                        <div class="col su">&nbsp;</div>
+                        <div class="col u">&nbsp;</div>
+                        <div class="col n">&nbsp;</div>
+                        <div class="col o">&nbsp;</div>
+                        <div class="col o1">&nbsp;</div>
+                        <div class="col o2">&nbsp;</div>
+                    </div>
+
+                    <div class="arrow2" style="clear: both;">
+                        <div></div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="gender">Select Gender</label>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <i class="fa fa-female selected" data-gender="1"></i>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <i class="fa fa-male" data-gender="2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Select metrics</label>
+                                    <div class="radio radio-success">
+                                        <input type="radio" name="bmimetric" data-metric id="bmi_imperial" value="1">
+                                        <label for="bmi_imperial">imperial</label>
+                                    </div>
+                                    <div class="radio radio-success">
+                                        <input type="radio" name="bmimetric" data-metric id="bmi_metric" value="2" checked="checked">
+                                        <label for="bmi_metric">metric</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 no-padding-left">
+                                <div class="form-group slider">
+                                    <label for="bmi_height">Height <small class="pull-right height-unit">cm</small></label>
+                                    <input type="range" id="bmi_height" data-height name="bmi_height" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="50" max="200">
+                                </div>
+                                <div class="form-group slider separator">
+                                    <label for="bmi_weight">Weight <small class="pull-right weight-unit">kg</small></label>
+                                    <input type="range" id="bmi_weight" data-weight name="bmi_weight" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="20" max="160">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div id="bmr" class="ui-content">
+                    <div class="results">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <small>basal metabolic rate</small>
+                                <h1 id="bmr-result" class="odometer">0.0</h1>
+                            </div>
+                            <div class="col-xs-6">
+                                <small>energy expanditure</small>
+                                <h1 id="energyExpanditure" class="odometer">0.0</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-info" id="calculateBMR"></button>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="activity">Select Actviity Factor</label>
+                                    <select name="activity" id="activity">
+                                        <option value="1">Extremely Inactive</option>
+                                        <option value="2">Sedentary</option>
+                                        <option value="3">Moderately active</option>
+                                        <option value="4">Vigorously active</option>
+                                        <option value="5">Extremely active</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="gender">Select Gender</label>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <i class="fa fa-female selected" data-gender="1"></i>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <i class="fa fa-male" data-gender="2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Select metrics</label>
+                                    <div class="radio radio-success">
+                                        <input type="radio" name="bmrmetric" data-metric id="bmr_imperial" value="1">
+                                        <label for="bmr_imperial">imperial</label>
+                                    </div>
+                                    <div class="radio radio-success">
+                                        <input type="radio" name="bmrmetric" data-metric id="bmr_metric" value="2" checked="checked">
+                                        <label for="bmr_metric">metric</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 no-padding-left">
+                                <div class="form-group">
+                                    <label for="bmr_age">Age</label>
+                                    <input type="number" name="bmr_age" data-age id="bmr_age">
+                                </div>
+                                <div class="form-group slider">
+                                    <label for="bmr_height">Height <small class="pull-right height-unit">cm</small></label>
+                                    <input type="range" id="bmr_height" data-height name="bmr_height" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="50" max="200">
+                                </div>
+                                <div class="form-group slider">
+                                    <label for="bmr_weight">Weight <small class="pull-right weight-unit">kg</small></label>
+                                    <input type="range" id="bmr_weight" data-weight name="bmr_weight" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="20" max="160">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                <div id="wthr" class="ui-content">
+                    <div class="results">
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <small>weist-to-height ratio</small>
+                                <h1 id="wthr-result" class="odometer">0.0</h1>
+                            </div>
+                            <div class="col-xs-4 user-info">
+                                <!-- <img src="img/1.jpg" alt=""> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-info" id="calculateWTHR"></button>
+                    </div>
+
+                    <div class="arrow">
+                        <div></div>
+                    </div>
+
+                    <div class="grid ui-responsive">
+                        <div class="col3 vsu">&nbsp;</div>
+                        <div class="col3 u">&nbsp;</div>
+                        <div class="col3 n">&nbsp;</div>
+                        <div class="col3 o">&nbsp;</div>
+                        <div class="col3 o1">&nbsp;</div>
+                        <div class="col3 o2">&nbsp;</div>
+                    </div>
+
+                    <div class="arrow2" style="clear: both;">
+                        <div></div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="gender">Select Gender</label>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <i class="fa fa-female selected" data-gender="1"></i>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <i class="fa fa-male" data-gender="2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Select metrics</label>
+                                    <div class="radio radio-success">
+                                        <input type="radio" name="metric1" data-metric id="wthr_imperial" value="1">
+                                        <label for="wthr_imperial">imperial</label>
+                                    </div>
+                                    <div class="radio radio-success">
+                                        <input type="radio" name="metric1" data-metric id="wthr_metric" value="2" checked="checked">
+                                        <label for="wthr_metric">metric</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 no-padding-left">
+                                <div class="form-group slider">
+                                    <label for="wthr_height">Height <small class="pull-right height-unit">cm</small></label>
+                                    <input type="range" id="wthr_height" data-height name="wthr_height" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="50" max="200">
+                                </div>
+                                <div class="form-group slider separator">
+                                    <label for="wthr_waist">Waist <small class="pull-right weight-unit">cm</small></label>
+                                    <input type="range" id="wthr_waist" data-waist name="wthr_waist" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="20" max="160">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+                <div id="bfp" class="ui-content">
+                    <div class="results">
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <small>body fat percentage</small>
+                                <h1 id="bfp-result" class="odometer">0.0</h1>
+                            </div>
+                            <div class="col-xs-4 user-info">
+                                <!-- <img src="img/1.jpg" alt=""> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-info" id="calculateBFP"></button>
+                    </div>
+
+                    <div class="arrow">
+                        <div></div>
+                    </div>
+
+                    <div class="grid ui-responsive">
+                        <div class="col2 vsu">&nbsp;</div>
+                        <div class="col2 u">&nbsp;</div>
+                        <div class="col2 n">&nbsp;</div>
+                        <div class="col2 o1">&nbsp;</div>
+                        <div class="col2 o2">&nbsp;</div>
+                    </div>
+
+                    <div class="arrow2" style="clear: both;">
+                        <div></div>
+                    </div>
+
+                    <div class="metrics">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="gender">Select Gender</label>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <i class="fa fa-female selected" data-gender="1"></i>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <i class="fa fa-male" data-gender="2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Select metrics</label>
+                                    <div class="radio radio-success">
+                                        <input type="radio" name="bfpmetric" data-metric id="bfp_imperial" value="1">
+                                        <label for="bfp_imperial">imperial</label>
+                                    </div>
+                                    <div class="radio radio-success">
+                                        <input type="radio" name="bfpmetric" data-metric id="bfp_metric" value="2" checked="checked">
+                                        <label for="bfp_metric">metric</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 no-padding-left">
+                                <div class="form-group slider">
+                                    <label for="bfp_height">Height <small class="pull-right weight-unit">cm</small></label>
+                                    <input type="range" id="bfp_height" data-height name="bfp_height" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="50" max="200">
+                                </div>
+                                <div class="form-group slider">
+                                    <label for="bfp_weight">Weight <small class="pull-right weight-unit">kg</small></label>
+                                    <input type="range" id="bfp_weight" data-weight name="bfp_weight" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="50" max="200">
+                                </div>
+                                <div class="form-group slider">
+                                    <label for="bfp_waist">Waist <small class="pull-right waist-unit">cm</small></label>
+                                    <input type="range" id="bfp_waist" data-waist name="bfp_waist" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="20" max="180">
+                                </div>
+                                <div class="form-group slider">
+                                    <label for="bfp_neck">Neck <small class="pull-right neck-unit">cm</small></label>
+                                    <input type="range" id="bfp_neck" data-neck data-neck name="bfp_neck" data-highlight="true" data-show-value="true" data-popup-enabled="true" min="20" max="80">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery-mobile.min.js"></script>
+        <script type="text/javascript" src="js/admob.js"></script>
+        <script type="text/javascript" src="js/SocialSharing.js"></script>
+        <script type="text/javascript" src="js/odometer.js"></script>
+        <script type="text/javascript" src="js/c3/d3.min.js"></script>
+        <script type="text/javascript" src="js/c3/c3.min.js"></script>
+        <script type="text/javascript" src="js/swiper/swiper.jquery.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>

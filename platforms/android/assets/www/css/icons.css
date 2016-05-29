@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('fonts/fontawesome-webfont.eot?v=4.5.0');
+    src: url('fonts/fontawesome-webfont.eot?#iefix&v=4.5.0') format('embedded-opentype'), url('fonts/fontawesome-webfont.woff2?v=4.5.0') format('woff2'), url('fonts/fontawesome-webfont.woff?v=4.5.0') format('woff'), url('fonts/fontawesome-webfont.ttf?v=4.5.0') format('truetype'), url('fonts/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular') format('svg');
+  
+    font-weight: normal;
+    font-style: normal;
+}
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.fa-female:before {
+  content: "\f182";
+}
+.fa-male:before {
+  content: "\f183";
+}
+.fa-bars:before {
+  content: "\f0c9";
+}
+.fa-back:before {
+  content: "\f053";
+}
+.fa-info-circle:before {
+  content: "\f05a";
+}
+.fa-share:before {
+  content: "\f1e0";
+}
+.fa-facebook:before {
+  content: "\f230";
+}
+.fa-google:before {
+  content: "\f0d5";
+}
+.fa-twitter:before {
+  content: "\f099";
+}
+.fa-check:before {
+  content: "\f00c";
+}
+.fa-area-chart:before {
+  content: "\f1fe";
+}
+.fa-calculator:before {
+  content: "\f1ec";
+}
+.fa-question-circle:before {
+  content: "\f059";
+}
+.fa-info-circle:before {
+  content: "\f05a";
+}
+.fa-sliders:before {
+  content: "\f1de";
+}
+.fa-cogs:before {
+  content: "\f085";
+}
+.fa-trash:before {
+  content: "\f014";
+}
